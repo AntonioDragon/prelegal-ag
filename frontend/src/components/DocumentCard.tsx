@@ -1,14 +1,18 @@
+import Link from "next/link";
 import type { DocumentTemplate } from "@/data/catalog";
 
 /**
  * A single document type card for the landing-page showcase.
- * Presentational only (PL-2) — clicking is wired up in a later task.
+ * Links to the workspace; document-specific routing comes in a later task.
  */
 export function DocumentCard({ template }: { template: DocumentTemplate }) {
   const initials = getInitials(template.name);
 
   return (
-    <article className="group flex h-full flex-col rounded-[var(--radius-card)] border border-[var(--color-border-subtle)] bg-surface p-6 transition-shadow hover:shadow-lg">
+    <Link
+      href="/workspace"
+      className="group flex h-full flex-col rounded-[var(--radius-card)] border border-[var(--color-border-subtle)] bg-surface p-6 transition-shadow hover:shadow-lg"
+    >
       <div
         className="flex h-11 w-11 items-center justify-center rounded-lg bg-brand-blue/10 text-sm font-bold text-brand-blue"
         aria-hidden="true"
@@ -41,7 +45,7 @@ export function DocumentCard({ template }: { template: DocumentTemplate }) {
           />
         </svg>
       </span>
-    </article>
+    </Link>
   );
 }
 

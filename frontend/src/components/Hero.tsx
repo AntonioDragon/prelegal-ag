@@ -27,9 +27,9 @@ export function Hero({ documentCount }: { documentCount: number }) {
           <Link href="/#documents" className="btn-primary">
             Browse documents
           </Link>
-          <button type="button" className="btn-secondary" disabled>
+          <Link href="/workspace" className="btn-secondary">
             Start a chat
-          </button>
+          </Link>
         </div>
       </div>
     </section>
