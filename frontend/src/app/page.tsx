@@ -1,21 +1,15 @@
+import { Hero } from "@/components/Hero";
+import { DocumentShowcase } from "@/components/DocumentShowcase";
+import { documentTemplates } from "@/data/catalog";
+
 /**
- * Home page — PL-1 placeholder.
- * The visual foundation (layout, header, footer, design tokens) is in place.
- * PL-2 replaces this with the hero + document showcase.
+ * Landing page (PL-2): hero + responsive showcase of all document types.
  */
 export default function Home() {
   return (
-    <section className="container-page flex flex-col items-center py-24 text-center">
-      <span className="rounded-full bg-brand-yellow/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-navy">
-        Design system ready
-      </span>
-      <h1 className="mt-6 max-w-2xl text-4xl font-bold tracking-tight text-brand-navy sm:text-5xl">
-        Visual foundation for Prelegal
-      </h1>
-      <p className="mt-4 max-w-xl text-brand-gray">
-        Global layout, header, footer, and brand design tokens are in place.
-        The landing page and document workspace come next.
-      </p>
-    </section>
+    <>
+      <Hero documentCount={documentTemplates.length} />
+      <DocumentShowcase />
+    </>
   );
 }

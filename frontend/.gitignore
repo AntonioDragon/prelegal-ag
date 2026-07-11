@@ -25,3 +25,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated: synced from repo-root catalog.json by scripts/copy-catalog.mjs
+/src/data/catalog.json

@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "copy-catalog": "node scripts/copy-catalog.mjs",
+    "predev": "npm run copy-catalog",
     "dev": "next dev",
+    "prebuild": "npm run copy-catalog",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
