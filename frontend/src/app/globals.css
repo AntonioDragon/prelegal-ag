@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/*
+ * Prelegal design system.
+ * Brand palette (from CLAUDE.md) exposed as Tailwind theme tokens so the whole
+ * app references semantic names (bg-brand-navy, text-brand-blue, …) instead of
+ * raw hex values.
+ */
+@theme {
+  --color-brand-yellow: #ecad0a;
+  --color-brand-blue: #209dd7;
+  --color-brand-purple: #753991;
+  --color-brand-navy: #032147;
+  --color-brand-gray: #888888;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f7fa;
+  --color-border-subtle: #e4e9f0;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 0.875rem;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-surface-muted);
+  color: var(--color-brand-navy);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Shared building blocks used across pages. */
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.625rem;
+    background-color: var(--color-brand-purple);
+    padding: 0.625rem 1.25rem;
+    font-weight: 600;
+    color: #ffffff;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  .btn-primary:hover {
+    opacity: 0.9;
+  }
+  .btn-primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0.625rem;
+    border: 1px solid var(--color-brand-blue);
+    padding: 0.625rem 1.25rem;
+    font-weight: 600;
+    color: var(--color-brand-blue);
+    background-color: transparent;
+    transition: background-color 0.15s ease;
+  }
+  .btn-secondary:hover {
+    background-color: color-mix(in srgb, var(--color-brand-blue) 8%, transparent);
+  }
+  .btn-secondary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
