@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Prelegal Project
 
 ## Overview
@@ -8,15 +12,15 @@ The available documents are covered in the catalog.json file in the project root
 
 @catalog.json
 
-The current implementation supports all 11 document types via AI chat with full user authentication and document persistence.
+> **Status: rebuilding from scratch.** The previous implementation (PL-4…PL-7) was removed intentionally. We are rebuilding starting from the visual/frontend layer (PL-1, PL-2, PL-3). Only instructions and assets remain: `CLAUDE.md`, `catalog.json`, `templates/`, `.claude/`, `README.md`, `LICENSE`, `.env.example`, and git/docker ignore files.
 
 ## Development process
 
 When instructed to build a feature:
-1. Use your Atlassian tools to read the feature instructions from Jira
-2. Develop the feature - do not skip any step from the feature-dev 7 step process
-3. Thoroughly test the feature with unit tests and integration tests and fix any issues
-4. Submit a PR using your github tools
+1. Read the feature instructions (Jira ticket, or the task description provided in chat)
+2. Develop the feature - do not skip any step from the feature-dev process
+3. Thoroughly test the feature and fix any issues
+4. Commit after each task and push to the working branch
 
 ## AI design
 
@@ -24,14 +28,14 @@ When writing code to make calls to LLMs, use your Cerebras skill to use LiteLLM 
 
 There is an OPENROUTER_API_KEY in the .env file in the project root.
 
-## Technical design
+## Technical design (target architecture — to be rebuilt)
 
-The entire project should be packaged into a Docker container.  
-The backend should be in backend/ and be a uv project, using FastAPI.  
-The frontend should be in frontend/  
-The database should use SQLLite and be created from scratch each time the Docker container is brought up, allowing for a users table with sign up and sign in.  
-Consider statically building the frontend and serving it via FastAPI, if that will work.  
-There should be scripts in scripts/ for:  
+The entire project should be packaged into a Docker container.
+The backend should be in backend/ and be a uv project, using FastAPI.
+The frontend should be in frontend/
+The database should use SQLLite and be created from scratch each time the Docker container is brought up, allowing for a users table with sign up and sign in.
+Consider statically building the frontend and serving it via FastAPI, if that will work.
+There should be scripts in scripts/ for:
 ```bash
 # Mac
 scripts/start-mac.sh    # Start
@@ -54,52 +58,22 @@ Backend available at http://localhost:8000
 - Dark Navy: `#032147` (headings)
 - Gray Text: `#888888`
 
-## Implementation Status
+## Assets
+- `templates/` — 11 legal document templates (source of truth for document structure). The AI's job is to extract field values, not to invent clauses.
+- `catalog.json` — the catalog of the 11 document types (name, description, filename), consumed by the UI and the AI prompt.
 
-### Completed (PL-4)
-- Docker multi-stage build (Node frontend + Python backend)
-- FastAPI backend with SQLite (fresh DB each container start)
-- Next.js static export served by FastAPI at localhost:8000
-- Auth routes: POST /api/auth/signup, POST /api/auth/signin, POST /api/auth/signout, GET /api/auth/me
-- Start/stop scripts for Mac, Linux, Windows
-- Mutual NDA form with live preview and PDF download
+## Roadmap
 
-### Completed (PL-5)
-- AI chat interface replaces manual form for NDA creation
-- Uses LiteLLM via OpenRouter with Cerebras inference (gpt-oss-120b model)
-- Structured outputs for reliable field extraction from conversation
-- Live preview updates as AI extracts fields from chat
-- AI greets user, asks questions conversationally, and confirms when complete
-- Download button appears when all required fields are gathered
+Rebuilding in order. Visual/frontend tasks first, then backend + AI.
 
-### Completed (PL-6)
-- Support for all 11 document types from catalog.json
-- AI detects document type from user requests and routes accordingly
-- Dedicated preview/PDF components for Mutual NDA, Cloud Service Agreement, Pilot Agreement
-- Generic preview/PDF components for remaining document types (Design Partner, SLA, Professional Services, Partnership, Software License, DPA, BAA, AI Addendum)
-- Auto-focus chat input after sending messages
-- AI always asks follow-on questions when more information is needed
+### PL-1 — Visual foundation & design system (frontend shell)
+Fresh Next.js app with Tailwind, the project color scheme, fonts, and a global layout (header with logo + footer). A static, empty shell that everything else builds on.
 
-### Completed (PL-7)
-- Functional user authentication with JWT tokens in HttpOnly cookies
-- User signup and signin with email/password (bcrypt password hashing)
-- Document persistence - users can save documents to their account
-- My Documents modal to view, load, and delete saved documents
-- User menu with sign out functionality
-- New Document button to start fresh
-- Auth context for managing user state across the app
-- Protected document save/load endpoints
+### PL-2 — Landing page with document showcase
+Home page: hero section + a responsive grid of cards for all 11 document types from `catalog.json` (name + description). Visual only.
 
-### Current API Endpoints
-- `POST /api/auth/signup` - Create new user account
-- `POST /api/auth/signin` - Sign in and receive JWT cookie
-- `POST /api/auth/signout` - Clear auth cookie
-- `GET /api/auth/me` - Get current user info
-- `GET /api/documents` - List user's saved documents (auth required)
-- `POST /api/documents` - Save new document (auth required)
-- `GET /api/documents/{id}` - Get specific document (auth required)
-- `PUT /api/documents/{id}` - Update document (auth required)
-- `DELETE /api/documents/{id}` - Delete document (auth required)
-- `GET /api/chat/greeting` - Get AI greeting
-- `POST /api/chat/message` - Send chat message and get AI response
-- `GET /api/health` - Health check
+### PL-3 — Document workspace layout
+The working-screen mockup: two columns — a chat placeholder on the left, a document-preview mockup on the right — with disabled Download / Save buttons. Layout only, no logic.
+
+### Later (backend + AI, previously PL-4…PL-7)
+FastAPI + SQLite backend, AI chat via LiteLLM/Cerebras with structured outputs, auth (JWT in HttpOnly cookies), and document persistence. To be re-planned when we reach it.
