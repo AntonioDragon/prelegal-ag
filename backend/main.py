@@ -4,6 +4,7 @@ Serves the JSON API under /api and, in production, the statically-exported
 Next.js frontend from frontend/out with SPA fallback.
 """
 
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI
@@ -12,14 +13,26 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 
+from database import init_db
+from routes.auth import router as auth_router
+
 load_dotenv()
 
 STATIC_DIR = Path(__file__).parent.parent / "frontend" / "out"
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Create database tables on startup."""
+    init_db()
+    yield
+
 
 app = FastAPI(
     title="Prelegal API",
     description="Backend API for Prelegal legal document SaaS",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
@@ -32,6 +45,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.include_router(auth_router)
 
 
 @app.get("/api/health")
