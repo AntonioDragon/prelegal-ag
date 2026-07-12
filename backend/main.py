@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 
 from database import init_db
 from routes.auth import router as auth_router
+from routes.chat import router as chat_router
 
 load_dotenv()
 
@@ -48,6 +49,7 @@ app.add_middleware(
 
 
 app.include_router(auth_router)
+app.include_router(chat_router)
 
 
 @app.get("/api/health")
